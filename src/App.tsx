@@ -1,21 +1,35 @@
 /* eslint-disable react/no-unknown-property */
-import React, { lazy } from "react";
-import { Canvas } from "@react-three/fiber";
-
-import "./App.css";
+import React, { lazy, Suspense } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Outlet,
+} from "react-router-dom";
 
 const Home = lazy(() => import("./pages/Home"));
 
+const Layout = () => {
+  return (
+    <>
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
+    </>
+  );
+};
+
 function App() {
   return (
-    <div id="canvas-container">
-      <Canvas
-        camera={{ position: [0, 0, 30] }}
-        gl={{ pixelRatio: window.devicePixelRatio }}
-      >
-        <Home />
-      </Canvas>
-    </div>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+          </Route>
+        </Routes>
+      </Router>
+    </>
   );
 }
 
